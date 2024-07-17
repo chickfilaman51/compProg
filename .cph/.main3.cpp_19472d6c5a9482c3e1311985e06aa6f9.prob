@@ -1,0 +1,1 @@
+{"name":"Local: main3","url":"/Users/krishbehera/Desktop/workspace/compProg/main3.cpp","tests":[{"id":1708359415558,"input":"5 5\n3 5 7 9 12\n4 2 3 3 8\n1 5\n1 6\n3 3\n4 2\n5 1","output":"YES\nNO\nYES\nYES\nNO"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/krishbehera/Desktop/workspace/compProg/main3.cpp","group":"local","local":true}
