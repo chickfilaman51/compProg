@@ -113,5 +113,6 @@
         "stop_token": "cpp",
         "syncstream": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "cph.general.saveLocation": "/Users/krishbehera/Desktop/workspace/compProg/bin"
 }
