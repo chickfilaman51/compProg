@@ -29,36 +29,25 @@ void setFile(string name = "") {
 int main() {
     int N;
     cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
+    vector<pair<ll,ll>> A(N);
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
-        }
+        cin >> A[i].first >> A[i].second;
     }
-    vector<int> cows(N);
+    vector<pair<ll,ll>> fullA;
     for (int i = 0; i < N; i++) {
-        cows[i] = i;
+        fullA.push_back({A[i].first,1});
+        fullA.push_back({A[i].second,-1});
     }
     
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
-            }
-        }
-    }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
+    ll maxAmt = 0;
+    ll currAmt = 0;
+    sort(all(fullA));
 
-    
-
+    for (int i = 0; i < 2*N; i++) {
+        currAmt += fullA[i].second;
+        maxAmt = max(maxAmt, currAmt);
+    }
+    cout << maxAmt << endl;
 
 
 }

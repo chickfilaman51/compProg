@@ -27,38 +27,28 @@ void setFile(string name = "") {
 }
 
 int main() {
+    setFile("mountains");
     int N;
     cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
+    vector<pair<ll,ll>> A(N);
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
+        cin >> A[i].first >> A[i].second;
+    }
+    vector<pair<ll,ll>> baseA;
+    for (int i = 0; i < N; i++) {
+        baseA.push_back({A[i].first-A[i].second,A[i].first+A[i].second});
+    }
+    sort(all(baseA));
+
+    int maxRightest = -1;
+    int obscured = 0;
+
+    for (int i = 0; i < N; i++) {
+        if (baseA[i].second > maxRightest) {
+            maxRightest = baseA[i].second;
+        } else {
+            obscured++;
         }
     }
-    vector<int> cows(N);
-    for (int i = 0; i < N; i++) {
-        cows[i] = i;
-    }
-    
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
-            }
-        }
-    }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
-
-    
-
-
-
+    cout << N - obscured << endl;
 }

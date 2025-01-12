@@ -8,7 +8,6 @@ void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
 #define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
 
-
 #define ar array
 #define ll long long
 #define ld long double
@@ -27,38 +26,53 @@ void setFile(string name = "") {
 }
 
 int main() {
+    //setFile("cardgame");
     int N;
     cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
+    vector<int> elsie(N);
+    vector<int> bessie;
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
+        cin >> elsie[i];
+    }
+    for (int i = 1; i <= 2 * N; i++) {
+        if (find(elsie.begin(), elsie.end(), i) == elsie.end()) {
+            bessie.push_back(i);
         }
     }
-    vector<int> cows(N);
-    for (int i = 0; i < N; i++) {
-        cows[i] = i;
+    sort(all(bessie));
+    
+    vector<int> upperBessie(N/2);
+    vector<int> lowerBessie(N/2);
+    for (int i = 0; i < (N/2); i++) {
+        lowerBessie[i] = bessie[i];
+        upperBessie[i] = bessie[i + (N/2)];
     }
+    int score = 0;
     
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
+        if (i >= (N/2)) {
+            for (int j = 0; j < (int)lowerBessie.size(); j++) {
+                if (elsie[i] > lowerBessie[j]) {
+                    score++;
+                    lowerBessie.erase(lowerBessie.begin() + j);
+                    break;
+                } else {
+                    lowerBessie.erase(lowerBessie.begin());
+                }
             }
+        } else {
+            for (int j = 0; j < (int)upperBessie.size(); j++) {
+                if (elsie[i] < upperBessie[j]) {
+                    score++;
+                    upperBessie.erase(upperBessie.begin() + j);
+                    break;
+                } else {
+                    upperBessie.erase(upperBessie.begin());
+                }
+            }
+            
         }
+        
     }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
-
-    
-
-
-
+    cout << score;
 }

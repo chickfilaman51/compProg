@@ -29,35 +29,36 @@ void setFile(string name = "") {
 int main() {
     int N;
     cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
+    vector<int> A(N);
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
-        }
+        cin >> A[i];
     }
-    vector<int> cows(N);
-    for (int i = 0; i < N; i++) {
-        cows[i] = i;
-    }
-    
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
-            }
-        }
-    }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
 
-    
+    vector<int> prefixGCD(N);
+    vector<int> suffixGCD(N);
+    prefixGCD[0] = A[0];
+    suffixGCD[N-1] = A[N-1];
+
+    for (int i = 1; i < N; i++) {
+        prefixGCD[i] = __gcd(prefixGCD[i-1], A[i]);
+    }
+    for (int i = N-2; i >= 0; i--) {
+        suffixGCD[i] = __gcd(suffixGCD[i+1], A[i]);
+    }
+
+    int maxGCD = 1;
+
+    for (int i = 0; i < N; i++) {
+        if (i == 0) {
+            maxGCD = max(maxGCD, suffixGCD[i+1]);
+        } else if (i == N-1) {
+            maxGCD = max(maxGCD, prefixGCD[i-1]);
+        } else {
+            maxGCD = max(maxGCD, __gcd(prefixGCD[i-1], suffixGCD[i+1]));
+        }
+    }
+
+    cout << maxGCD;
 
 
 

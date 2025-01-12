@@ -30,38 +30,27 @@ int main() {
     setFile("highcard");
     int N;
     cin >> N;
-    vector<int> E(N);
-    vector<int> B;
-    map<int, bool> A;
+    vector<int> elsie(N);
+    set<int> bessie;
+    for (int i = 0; i < N; i++) {
+        cin >> elsie[i];
+    }
+    for (int i = 1; i <= 2 * N; i++) {
+        if (find(elsie.begin(), elsie.end(), i) == elsie.end()) {
+            bessie.insert(i);
+        }
+    }
+    int score = 0;
 
     for (int i = 0; i < N; i++) {
-        cin >> E[i];
-        A[E[i]] = true;
-    }
-
-    for (int i = 1; i <= (N*2); i++) {
-        if (!A[i]) {
-            B.push_back(i);
+        auto it = bessie.upper_bound(elsie[i]);
+        if (it != bessie.end()) {
+            score++;
+            bessie.erase(it);
+        } else {
+            bessie.erase(bessie.begin());
         }
     }
 
-    sort(E.begin(), E.end());
-
-    int idx = 0;
-    int ans = 0;
-
-
-    for (int card : E) {
-        for (int i = idx; i < N; i++) {
-            if (B[i] > card) {
-                ans++;
-                idx = i + 1;
-                break;
-            }
-        }
-    }
-
-    cout << ans << "\n";
-
-
-}
+    cout << score << endl;
+}   

@@ -27,38 +27,21 @@ void setFile(string name = "") {
 }
 
 int main() {
-    int N;
+    ll N;
     cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
-        }
+    vector<pair<ll, ll>> tasks(N);
+    for (ll i = 0; i < N; i++) {
+        cin >> tasks[i].first >> tasks[i].second;
     }
-    vector<int> cows(N);
-    for (int i = 0; i < N; i++) {
-        cows[i] = i;
+    sort(all(tasks));
+
+    ll score = 0;
+    ll time = 0;
+
+    for (ll i = 0; i < N; i++) {
+        time += tasks[i].first;
+        score += (tasks[i].second - (time));
+
     }
-    
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
-            }
-        }
-    }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
-
-    
-
-
-
+    cout << score;
 }

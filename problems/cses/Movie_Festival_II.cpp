@@ -27,38 +27,35 @@ void setFile(string name = "") {
 }
 
 int main() {
-    int N;
-    cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
-        }
+    ll N,K;
+    cin >> N >> K;
+    vector<pair<ll, ll>> movies(N);
+    for (ll i = 0; i < N; i++) {
+        cin >> movies[i].first >> movies[i].second;
     }
-    vector<int> cows(N);
-    for (int i = 0; i < N; i++) {
-        cows[i] = i;
-    }
-    
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
+    sort(all(movies),[](pair<ll,ll> a, pair<ll,ll> b){
+        return a.second < b.second;
+    });
+    dbg(movies);
+    vector<ll> curr;
+    ll watched = 0;
+ 
+    for (ll i = 0; i < N; i++) {
+        if (i < K) {
+            curr.push_back(movies[i].second);
+            watched++;
+        } else {
+            
+            auto it = upper_bound(curr.rbegin(), curr.rend(), movies[i].first,
+                       [](int a, int b){return a>=b;});
+            if (it != curr.rend()) {
+                curr.push_back(movies[i].second);
+                curr.erase((++it).base());
+                watched++;
             }
         }
+        dbg(curr);
+        
     }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
-
-    
-
-
-
+    cout << watched;
 }

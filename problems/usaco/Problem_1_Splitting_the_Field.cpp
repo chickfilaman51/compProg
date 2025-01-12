@@ -27,38 +27,60 @@ void setFile(string name = "") {
 }
 
 int main() {
+    //setFile("split");
     int N;
     cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
+    vector<pair<ll,ll>> A(N);
+    map<ll,ll> possX;
+    map<ll,ll> possY;
+    ll minX = INF;
+    ll minY = INF;
+    ll maxX = 0;
+    ll maxY = 0;
+    vector<ll> xVals;
+    vector<ll> yVals;
+
     for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
+        cin >> A[i].first >> A[i].second;
+        minX = min(minX, A[i].first);
+        minY = min(minY, A[i].second);
+        maxX = max(maxX, A[i].first);
+        maxY = max(maxY, A[i].second);
+    }
+
+    for (int i = minX; i <= maxX; i++) {
+        possX[i] = 0;
+    }
+    for (int i = minY; i <= maxY; i++) {
+        possY[i] = 0;
+    }
+
+    for (int i = 0; i < N; i++) {
+        possX[A[i].first]++;
+        possY[A[i].second]++;
+    }
+
+    for (int i = minX; i <= maxX; i++) {
+        if (possX[i] == 0) {
+            xVals.push_back(i);
+        }   
+    }
+    for (int i = minY; i <= maxY; i++) {
+        if (possY[i] == 0) {
+            yVals.push_back(i);
         }
     }
-    vector<int> cows(N);
-    for (int i = 0; i < N; i++) {
-        cows[i] = i;
-    }
-    
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
-            }
-        }
-    }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
+
+    sort(all(A));
 
     
+    vector<pair<pair<ll,ll>,pair<ll,ll>>> minMaxesX(maxX-minX+1);
+    vector<pair<pair<ll,ll>,pair<ll,ll>>> minMaxesY(maxY-minY+1);
+    minMaxesX[i-minX] = {{INF,0},{INF,0}};
+    for (int i = minX; i <= maxX; i++) {
+        minMaxesX[i-minX] = {{INF,0},{INF,0}};
+    }
 
-
+    
 
 }

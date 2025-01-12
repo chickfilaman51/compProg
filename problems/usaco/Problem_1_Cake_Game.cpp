@@ -27,38 +27,31 @@ void setFile(string name = "") {
 }
 
 int main() {
-    int N;
-    cin >> N;
-    vector<vector<int>> prefs(N, vector<int>(N));
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int a;
-            cin >> a;
-            prefs[i][j] = a-1;
+    int T;
+    cin >> T;
+    while (T--) {
+        ll N;
+        cin >> N;
+        vector<ll> A(N);
+        for (ll i = 0; i < N; i++) {
+            cin >> A[i];
         }
-    }
-    vector<int> cows(N);
-    for (int i = 0; i < N; i++) {
-        cows[i] = i;
-    }
-    
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < find(all(prefs[i]), cows[i]) - prefs[i].begin(); j++) {
-            int currentItem = cows[i];
-            int prefferedItem = prefs[i][j];
-            int personPreffered = find(all(cows), prefferedItem) - cows.begin();
-            if (find(all(prefs[personPreffered]), currentItem) - prefs[personPreffered].begin() < find(all(prefs[personPreffered]), prefferedItem) - prefs[personPreffered].begin()) {
-                swap(cows[i], cows[personPreffered]);
-            }
+        vector<ll> prefix(N+1);
+        prefix[0] = 0;
+        for (ll i = 1; i <= N; i++) {
+            prefix[i] = prefix[i-1] + A[i-1];
         }
+
+        ll minBessie = INF*1000000000;
+        ll amt = (N/2) + 1;
+        
+        for (ll i = 0; i < (N - amt + 1); i++) {
+            ll bessie = prefix[i+amt] - prefix[i];
+            minBessie = min(minBessie, bessie);
+        }
+        cout << minBessie << " " << (prefix[N] - minBessie) << endl;
+
+
     }
-    for (int i = 0; i < N; i++) {
-        cout << cows[i] + 1 << endl;
-    }
-    
-
-    
-
-
 
 }
